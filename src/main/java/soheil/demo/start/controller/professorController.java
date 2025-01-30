@@ -6,5 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/professor")
 public class professorController {
-
+    
+    void hello() {
+        System.out.println("hello");
+    }
 }
