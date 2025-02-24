@@ -1,4 +1,4 @@
 package soheil.demo.start.service;
 
-public class professorController {
+public class professorService {
 }
