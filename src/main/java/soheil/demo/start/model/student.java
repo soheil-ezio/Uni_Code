@@ -51,21 +51,38 @@ public class student {
     //Getters & Setters.
     //-------------------------------------------------------------------------------
 
+    public long getId() {
+        return id;
+    }
+
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getLast_name() {
+        return last_name;
+    }
+
     public void setLast_name(String last_name) {
         this.last_name = last_name;
+    }
+
+    public int getStudent_id_number() {
+        return student_id_number;
     }
 
     public void setStudent_id_number(int student_id_number) {
         this.student_id_number = student_id_number;
     }
+
 
     //-------------------------------------------------------------------------------
 
