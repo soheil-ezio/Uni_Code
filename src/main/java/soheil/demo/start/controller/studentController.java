@@ -1,10 +1,8 @@
 package soheil.demo.start.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soheil.demo.start.model.student;
-import soheil.demo.start.model.studentRepository;
 import soheil.demo.start.service.studentService;
 
 import java.util.List;
@@ -13,12 +11,19 @@ import java.util.List;
 @RequestMapping("/student")
 public class studentController {
 
+    //Service declaration.
+    //-------------------------------------------------------------------------------
     private final studentService studentService;
 
+    //Constructor.
+    //-------------------------------------------------------------------------------
     public studentController(studentService studentService) {
         this.studentService = studentService;
     }
+    //-------------------------------------------------------------------------------
 
+    //End-Points. ( <C-R-U-D> End-points )
+    //-------------------------------------------------------------------------------
     @GetMapping("/students-list")
     ResponseEntity<List<student>> getAllStudents() {
         if (studentService.getAllStudents() == null) {
@@ -47,5 +52,5 @@ public class studentController {
         }
         return ResponseEntity.ok(studentService.updateStudent(student, id));
     }
-
+    //-------------------------------------------------------------------------------
 }

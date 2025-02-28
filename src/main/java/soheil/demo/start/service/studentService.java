@@ -9,12 +9,18 @@ import java.util.List;
 @Service
 public class studentService {
 
+    //Repository declaration.
     private final studentRepository studentRepository;
 
+    //Constructor.
+    //-------------------------------------------------------------------------------
     studentService(studentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
+    //-------------------------------------------------------------------------------
 
+    //Methods.
+    //-------------------------------------------------------------------------------
     public List<student> getAllStudents() {
         return studentRepository.findAll();
     }
@@ -42,4 +48,5 @@ public class studentService {
         }
         return null;
     }
+    //-------------------------------------------------------------------------------
 }

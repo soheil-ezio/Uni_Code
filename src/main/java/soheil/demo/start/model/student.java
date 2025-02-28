@@ -2,6 +2,8 @@ package soheil.demo.start.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 
 @Entity
 @Table(name = "student")
@@ -9,7 +11,6 @@ public class student {
 
     //Attributes.
     //-------------------------------------------------------------------------------
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false,unique = true,name = "id")
@@ -23,34 +24,37 @@ public class student {
 
     @Column(nullable = false, name = "student_id_number")
     private int student_id_number;
-
     //-------------------------------------------------------------------------------
 
     //Relational Attributes.
     //-------------------------------------------------------------------------------
-    //nothing yet
+    @ManyToOne
+    @JoinColumn(name = "university_id")
+    private university university;
+
+    @ManyToMany(mappedBy = "students")
+    private Set<professor> professorList;
     //-------------------------------------------------------------------------------
 
 
     //Constructors.
     //-------------------------------------------------------------------------------
+    public student() {}
 
-    public student() {
-
-    }
-
-    public student(long id, String name, String last_name, int student_id_number) {
+    public student(long id,
+                   String name,
+                   String last_name,
+                   int student_id_number)
+    {
         this.id = id;
         this.name = name;
         this.last_name = last_name;
         this.student_id_number = student_id_number;
     }
-
     //-------------------------------------------------------------------------------
 
     //Getters & Setters.
     //-------------------------------------------------------------------------------
-
     public long getId() {
         return id;
     }
@@ -83,12 +87,25 @@ public class student {
         this.student_id_number = student_id_number;
     }
 
+    public soheil.demo.start.model.university getUniversity() {
+        return university;
+    }
 
+    public void setUniversity(soheil.demo.start.model.university university) {
+        this.university = university;
+    }
+
+    public Set<professor> getProfessorList() {
+        return professorList;
+    }
+
+    public void setProfessorList(Set<professor> professorList) {
+        this.professorList = professorList;
+    }
     //-------------------------------------------------------------------------------
 
     //toString Method.
     //-------------------------------------------------------------------------------
-
     @Override
     public String toString() {
         return "student{" +
@@ -98,6 +115,5 @@ public class student {
                 ", student_id_number=" + student_id_number +
                 '}';
     }
-
     //-------------------------------------------------------------------------------
 }
