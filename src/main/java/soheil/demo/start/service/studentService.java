@@ -2,7 +2,7 @@ package soheil.demo.start.service;
 
 import org.springframework.stereotype.Service;
 import soheil.demo.start.model.student;
-import soheil.demo.start.model.studentRepository;
+import soheil.demo.start.Repository.studentRepository;
 
 import java.util.List;
 

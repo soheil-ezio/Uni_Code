@@ -25,7 +25,7 @@ public class professorController {
     //End-Points. ( <C-R-U-D> End-points )
     //-------------------------------------------------------------------------------
     @GetMapping("/professors-list")
-    ResponseEntity<List<professor>> getAllProfessors() {
+    public ResponseEntity<List<professor>> getAllProfessors() {
         if (professorService.getAllProfessors() == null) {
             return ResponseEntity.noContent().build();
         }
@@ -33,7 +33,7 @@ public class professorController {
     }
 
     @GetMapping("/find-professor-{id}")
-    ResponseEntity<professor> findProfessor(@PathVariable long id) {
+    public ResponseEntity<professor> findProfessor(@PathVariable long id) {
         if (professorService.getProfessorById(id) == null) {
             return ResponseEntity.notFound().build();
         }
@@ -41,12 +41,12 @@ public class professorController {
     }
 
     @PostMapping("/add-professor")
-    ResponseEntity<professor> addProfessor(@RequestBody professor professor) {
+    public ResponseEntity<professor> addProfessor(@RequestBody professor professor) {
         return ResponseEntity.ok(professorService.addprofessor(professor));
     }
 
     @PutMapping("/update-professor-{id}")
-    ResponseEntity<professor> updateProfessor(@RequestBody professor professor, @PathVariable long id) {
+    public ResponseEntity<professor> updateProfessor(@RequestBody professor professor, @PathVariable long id) {
         if (professorService.getProfessorById(id) == null) {
             return ResponseEntity.notFound().build();
         }

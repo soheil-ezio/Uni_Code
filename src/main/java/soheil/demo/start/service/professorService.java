@@ -1,10 +1,8 @@
 package soheil.demo.start.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soheil.demo.start.model.professor;
-import soheil.demo.start.model.professorRepository;
+import soheil.demo.start.Repository.professorRepository;
 
 
 import java.util.List;

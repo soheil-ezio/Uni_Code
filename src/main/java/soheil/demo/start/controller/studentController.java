@@ -25,7 +25,7 @@ public class studentController {
     //End-Points. ( <C-R-U-D> End-points )
     //-------------------------------------------------------------------------------
     @GetMapping("/students-list")
-    ResponseEntity<List<student>> getAllStudents() {
+    public ResponseEntity<List<student>> getAllStudents() {
         if (studentService.getAllStudents() == null) {
             return ResponseEntity.noContent().build();
         }
@@ -33,7 +33,7 @@ public class studentController {
     }
 
     @GetMapping("/find-student-{id}")
-    ResponseEntity<student> findStudent(@PathVariable long id) {
+    public ResponseEntity<student> findStudent(@PathVariable long id) {
         if (studentService.getStudentById(id) == null) {
             return ResponseEntity.notFound().build();
         }
@@ -41,12 +41,12 @@ public class studentController {
     }
 
     @PostMapping("/add-student")
-    ResponseEntity<student> addStudent(@RequestBody student student) {
+    public ResponseEntity<student> addStudent(@RequestBody student student) {
         return ResponseEntity.ok(studentService.addStudent(student));
     }
 
     @PutMapping("/update-student-{id}")
-    ResponseEntity<student> updateStudent(@RequestBody student student, @PathVariable long id) {
+    public ResponseEntity<student> updateStudent(@RequestBody student student, @PathVariable long id) {
         if (studentService.getStudentById(id) == null) {
             return ResponseEntity.notFound().build();
         }

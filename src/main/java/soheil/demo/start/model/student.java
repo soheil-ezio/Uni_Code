@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "student")
-public class student {
+public class student extends user{
 
     //Attributes.
     //-------------------------------------------------------------------------------
