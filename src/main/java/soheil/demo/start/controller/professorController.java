@@ -42,7 +42,7 @@ public class professorController {
 
     @PostMapping("/add-professor")
     public ResponseEntity<professor> addProfessor(@RequestBody professor professor) {
-        return ResponseEntity.ok(professorService.addprofessor(professor));
+        return ResponseEntity.ok(professorService.addProfessor(professor));
     }
 
     @PutMapping("/update-professor-{id}")

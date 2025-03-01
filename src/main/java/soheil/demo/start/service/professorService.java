@@ -33,7 +33,7 @@ public class professorService {
         return null;
     }
 
-    public professor addprofessor(professor professor) {
+    public professor addProfessor(professor professor) {
         return professorRepository.save(professor);
     }
 

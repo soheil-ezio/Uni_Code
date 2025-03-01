@@ -48,5 +48,9 @@ public class studentService {
         }
         return null;
     }
+
+    public void setUniversity(student student) {
+        st
+    }
     //-------------------------------------------------------------------------------
 }

@@ -1,6 +1,7 @@
 package soheil.demo.start.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.Set;
 
@@ -14,6 +15,7 @@ public class student extends user{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false,unique = true,name = "id")
+    @Cascade(org.hibernate.annotations.CascadeType.DETACH)
     private long id;
 
     @Column(nullable = false, name = "name")
@@ -47,6 +49,28 @@ public class student extends user{
                    int student_id_number)
     {
         this.id = id;
+        this.name = name;
+        this.last_name = last_name;
+        this.student_id_number = student_id_number;
+    }
+
+    public student(String name,
+                   String last_name,
+                   int student_id_number)
+    {
+        this.name = name;
+        this.last_name = last_name;
+        this.student_id_number = student_id_number;
+    }
+
+    public student(String name,
+                   String last_name,
+                   int student_id_number,
+                   String username,
+                   String password,
+                   String role)
+    {
+        super(username, password, role);
         this.name = name;
         this.last_name = last_name;
         this.student_id_number = student_id_number;

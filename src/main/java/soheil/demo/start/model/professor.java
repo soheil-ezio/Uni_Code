@@ -53,6 +53,28 @@ public class professor extends user{
         this.last_name = last_name;
         this.professor_id_number = professor_id_number;
     }
+
+    public professor(String name,
+                     String last_name,
+                     int professor_id_number)
+    {
+        this.name = name;
+        this.last_name = last_name;
+        this.professor_id_number = professor_id_number;
+    }
+
+    public professor(String name,
+                     String last_name,
+                     int professor_id_number,
+                     String username,
+                     String password,
+                     String role)
+    {
+        super(username, password, role);
+        this.name = name;
+        this.last_name = last_name;
+        this.professor_id_number = professor_id_number;
+    }
     //-------------------------------------------------------------------------------
 
     //Setters & Getters.
