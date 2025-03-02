@@ -1,7 +1,6 @@
 package soheil.demo.start.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 
 import java.util.Set;
 
@@ -12,10 +11,7 @@ public class student extends user{
 
     //Attributes.
     //-------------------------------------------------------------------------------
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false,unique = true,name = "id")
-    @Cascade(org.hibernate.annotations.CascadeType.DETACH)
+    @Column(nullable = false, updatable = false, unique = true, name = "id")
     private long id;
 
     @Column(nullable = false, name = "name")

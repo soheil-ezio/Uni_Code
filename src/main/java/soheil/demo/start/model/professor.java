@@ -10,8 +10,7 @@ public class professor extends user{
 
     //Attributes.
     //-------------------------------------------------------------------------------
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false, unique = true, name = "id")
     private long id;
 
     @Column(nullable = false, name = "name")

@@ -20,16 +20,20 @@ public class university {
 
     //Relational Attributes.
     //-------------------------------------------------------------------------------
-    @OneToMany(mappedBy = "university")
+    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<professor> professors;
 
-    @OneToMany(mappedBy = "university")
+    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<student> students;
     //-------------------------------------------------------------------------------
 
     //Constructors.
     //-------------------------------------------------------------------------------
     public university() {}
+
+    public university(String name) {
+        this.name = name;
+    }
 
     public university(int id,
                       String name)
