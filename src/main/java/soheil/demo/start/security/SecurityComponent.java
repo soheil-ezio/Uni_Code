@@ -17,17 +17,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-public class securityComponent {
+public class SecurityComponent {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/professor/**").hasAnyRole("PROFESSOR", "ADMIN")
-                        .requestMatchers("/student/**").hasAnyRole("STUDENT", "ADMIN")
-                        .requestMatchers("/university/**").hasAnyRole("UNIVERSITY", "ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/professor/**").hasAnyRole("PROFESSOR", "ADMIN")
+                        .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "ADMIN")
+                        .requestMatchers("/api/university/**").hasAnyRole("UNIVERSITY", "ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(Customizer.withDefaults())

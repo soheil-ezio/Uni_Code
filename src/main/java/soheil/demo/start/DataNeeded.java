@@ -3,26 +3,26 @@ package soheil.demo.start;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import soheil.demo.start.Repository.universityRepository;
-import soheil.demo.start.Repository.userRepository;
-import soheil.demo.start.model.admin;
-import soheil.demo.start.model.university;
-import soheil.demo.start.service.universityService;
+import soheil.demo.start.repository.UniversityRepository;
+import soheil.demo.start.repository.UserRepository;
+import soheil.demo.start.model.Admin;
+import soheil.demo.start.model.University;
+import soheil.demo.start.service.UniversityService;
 
 @Component
-public class dataNeeded implements CommandLineRunner {
+public class DataNeeded implements CommandLineRunner {
 
     //Declaring Repositories & passwordEncoder
-    private final userRepository userRepository;
-    private final universityService universityService;
-    private final universityRepository universityRepository;
+    private final UserRepository userRepository;
+    private final UniversityService universityService;
+    private final UniversityRepository universityRepository;
     private final PasswordEncoder passwordEncoder;
 
     //Constructor.
     //-------------------------------------------------------------------------------
-    public dataNeeded(userRepository userRepository,
-                      universityService universityService,
-                      universityRepository universityRepository,
+    public DataNeeded(UserRepository userRepository,
+                      UniversityService universityService,
+                      UniversityRepository universityRepository,
                       PasswordEncoder passwordEncoder)
     {
         this.userRepository = userRepository;
@@ -35,16 +35,16 @@ public class dataNeeded implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (!userRepository.existsById("admin")) {
-            admin user = new admin(
-                    "admin",
-                    passwordEncoder.encode("admin"),
+        if (!userRepository.existsById("Admin")) {
+            Admin user = new Admin(
+                    "Admin",
+                    passwordEncoder.encode("Admin"),
                     "ADMIN"
             );
             userRepository.save(user);
         }
         if (universityRepository.count() == 0) {
-            university university = new university("Shahrood University of Technology");
+            University university = new University("Shahrood University of Technology");
             universityService.addUniversity(university);
         }
     }

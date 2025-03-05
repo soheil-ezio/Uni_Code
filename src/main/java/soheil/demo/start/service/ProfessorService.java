@@ -1,45 +1,45 @@
 package soheil.demo.start.service;
 
 import org.springframework.stereotype.Service;
-import soheil.demo.start.model.professor;
-import soheil.demo.start.Repository.professorRepository;
+import soheil.demo.start.model.Professor;
+import soheil.demo.start.repository.ProfessorRepository;
 
 
 import java.util.List;
 
 @Service
-public class professorService {
+public class ProfessorService {
 
-    //Repository declaration.
-    private final professorRepository professorRepository;
+    //repository declaration.
+    private final ProfessorRepository professorRepository;
 
     //Constructor.
     //-------------------------------------------------------------------------------
-    professorService(professorRepository professorRepository) {
+    ProfessorService(ProfessorRepository professorRepository) {
         this.professorRepository = professorRepository;
     }
     //-------------------------------------------------------------------------------
 
     //Methods.
     //-------------------------------------------------------------------------------
-    public List<professor> getAllProfessors() {
+    public List<Professor> getAllProfessors() {
         return professorRepository.findAll();
     }
 
-    public professor getProfessorById(long id) {
+    public Professor getProfessorById(long id) {
         if (professorRepository.findById(id).isPresent()) {
             return professorRepository.findById(id).get();
         }
         return null;
     }
 
-    public professor addProfessor(professor professor) {
+    public Professor addProfessor(Professor professor) {
         return professorRepository.save(professor);
     }
 
-    public professor updateprofessor(professor professor, long id) {
+    public Professor updateprofessor(Professor professor, long id) {
         if (professorRepository.findById(id).isPresent()) {
-            professor professor1 = professorRepository.findById(id).get();
+            Professor professor1 = professorRepository.findById(id).get();
 
             professor1.setName(professor.getName());
             professor1.setLast_name(professor.getLast_name());

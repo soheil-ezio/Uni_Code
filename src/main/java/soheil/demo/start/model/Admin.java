@@ -3,13 +3,13 @@ package soheil.demo.start.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class admin extends user{
+public class Admin extends User {
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    public admin() {}
+    public Admin() {}
 
-    public admin(String username, String password, String role) {
+    public Admin(String username, String password, String role) {
         super(username, password, role);
     }
     //-------------------------------------------------------------------------------

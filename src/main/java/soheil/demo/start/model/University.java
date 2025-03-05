@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "university")
-public class university {
+public class University {
 
     //Attributes.
     //-------------------------------------------------------------------------------
@@ -21,21 +21,21 @@ public class university {
     //Relational Attributes.
     //-------------------------------------------------------------------------------
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
-    private List<professor> professors;
+    private List<Professor> Professors;
 
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
-    private List<student> students;
+    private List<Student> Students;
     //-------------------------------------------------------------------------------
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    public university() {}
+    public University() {}
 
-    public university(String name) {
+    public University(String name) {
         this.name = name;
     }
 
-    public university(int id,
+    public University(int id,
                       String name)
     {
         this.id = id;
@@ -61,20 +61,20 @@ public class university {
         this.name = name;
     }
 
-    public List<professor> getProfessors() {
-        return professors;
+    public List<Professor> getProfessors() {
+        return Professors;
     }
 
-    public void setProfessors(List<professor> professors) {
-        this.professors = professors;
+    public void setProfessors(List<Professor> Professors) {
+        this.Professors = Professors;
     }
 
-    public List<student> getStudents() {
-        return students;
+    public List<Student> getStudents() {
+        return Students;
     }
 
-    public void setStudents(List<student> students) {
-        this.students = students;
+    public void setStudents(List<Student> Students) {
+        this.Students = Students;
     }
     //-------------------------------------------------------------------------------
 
@@ -82,7 +82,7 @@ public class university {
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "university{" +
+        return "University{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

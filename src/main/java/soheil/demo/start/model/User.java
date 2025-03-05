@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class user {
+public class User {
 
     //Attributes.
     //-------------------------------------------------------------------------------
@@ -21,14 +21,14 @@ public class user {
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    public user() {}
+    public User() {}
 
-    public user(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public user(String username, String password, String role) {
+    public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -66,7 +66,7 @@ public class user {
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "user{" +
+        return "User{" +
                 "username=" + username +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +

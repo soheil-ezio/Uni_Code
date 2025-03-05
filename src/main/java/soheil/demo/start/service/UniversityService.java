@@ -1,42 +1,42 @@
 package soheil.demo.start.service;
 
 import org.springframework.stereotype.Service;
-import soheil.demo.start.Repository.universityRepository;
-import soheil.demo.start.model.university;
+import soheil.demo.start.repository.UniversityRepository;
+import soheil.demo.start.model.University;
 
 import java.util.List;
 
 @Service
-public class universityService {
+public class UniversityService {
 
-    //Repository declaration.
+    //repository declaration.
     //-------------------------------------------------------------------------------
-    private final universityRepository universityRepository;
+    private final UniversityRepository universityRepository;
 
     //Constructor.
     //-------------------------------------------------------------------------------
-    public universityService(universityRepository universityRepository) {
+    public UniversityService(UniversityRepository universityRepository) {
         this.universityRepository = universityRepository;
     }
     //-------------------------------------------------------------------------------
 
     //Methods.
     //-------------------------------------------------------------------------------
-    public university getUniversity(long id) {
+    public University getUniversity(long id) {
         if (universityRepository.findById(id).isPresent()) {
             return universityRepository.findById(id).get();
         }
         return null;
     }
 
-    public List<university> getAllUniversities() {
+    public List<University> getAllUniversities() {
         if (universityRepository.findAll().isEmpty()) {
             return null;
         }
         return universityRepository.findAll();
     }
 
-    public university addUniversity(university university) {
+    public University addUniversity(University university) {
         return universityRepository.save(university);
     }
     //-------------------------------------------------------------------------------

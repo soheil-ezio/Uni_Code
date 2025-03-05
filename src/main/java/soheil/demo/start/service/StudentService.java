@@ -1,44 +1,44 @@
 package soheil.demo.start.service;
 
 import org.springframework.stereotype.Service;
-import soheil.demo.start.model.student;
-import soheil.demo.start.Repository.studentRepository;
+import soheil.demo.start.model.Student;
+import soheil.demo.start.repository.StudentRepository;
 
 import java.util.List;
 
 @Service
-public class studentService {
+public class StudentService {
 
-    //Repository declaration.
-    private final studentRepository studentRepository;
+    //repository declaration.
+    private final StudentRepository studentRepository;
 
     //Constructor.
     //-------------------------------------------------------------------------------
-    studentService(studentRepository studentRepository) {
+    StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
     //-------------------------------------------------------------------------------
 
     //Methods.
     //-------------------------------------------------------------------------------
-    public List<student> getAllStudents() {
+    public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
-    public student getStudentById(long id) {
+    public Student getStudentById(long id) {
         if (studentRepository.findById(id).isPresent()) {
             return studentRepository.findById(id).get();
         }
         return null;
     }
 
-    public student addStudent(student student) {
+    public Student addStudent(Student student) {
         return studentRepository.save(student);
     }
 
-    public student updateStudent(student student, long id) {
+    public Student updateStudent(Student student, long id) {
         if (studentRepository.findById(id).isPresent()) {
-            student student1 = studentRepository.findById(id).get();
+            Student student1 = studentRepository.findById(id).get();
 
             student1.setName(student.getName());
             student1.setLast_name(student.getLast_name());
@@ -49,7 +49,7 @@ public class studentService {
         return null;
     }
 
-//    public void setUniversity(student student) {
+//    public void setUniversity(Student Student) {
 //        st
 //    }
     //-------------------------------------------------------------------------------

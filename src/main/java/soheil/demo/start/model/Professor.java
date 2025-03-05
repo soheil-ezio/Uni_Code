@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "professor")
-public class professor extends user{
+public class Professor extends User {
 
     //Attributes.
     //-------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ public class professor extends user{
     //-------------------------------------------------------------------------------
     @ManyToOne
     @JoinColumn(name = "university_id")
-    private university university;
+    private University university;
 
     @ManyToMany
     @JoinTable(
@@ -35,14 +35,14 @@ public class professor extends user{
             joinColumns = @JoinColumn(name = "professor_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-    private Set<student> students;
+    private Set<Student> Students;
     //-------------------------------------------------------------------------------
 
     //Constructor
     //-------------------------------------------------------------------------------
-    public professor() {}
+    public Professor() {}
 
-    public professor(long id,
+    public Professor(long id,
                      String name,
                      String last_name,
                      int professor_id_number)
@@ -53,7 +53,7 @@ public class professor extends user{
         this.professor_id_number = professor_id_number;
     }
 
-    public professor(String name,
+    public Professor(String name,
                      String last_name,
                      int professor_id_number)
     {
@@ -62,7 +62,7 @@ public class professor extends user{
         this.professor_id_number = professor_id_number;
     }
 
-    public professor(String name,
+    public Professor(String name,
                      String last_name,
                      int professor_id_number,
                      String username,
@@ -110,20 +110,20 @@ public class professor extends user{
         this.professor_id_number = professor_id_number;
     }
 
-    public soheil.demo.start.model.university getUniversity() {
+    public University getUniversity() {
         return university;
     }
 
-    public void setUniversity(soheil.demo.start.model.university university) {
+    public void setUniversity(University university) {
         this.university = university;
     }
 
-    public Set<student> getStudents() {
-        return students;
+    public Set<Student> getStudents() {
+        return Students;
     }
 
-    public void setStudents(Set<student> students) {
-        this.students = students;
+    public void setStudents(Set<Student> Students) {
+        this.Students = Students;
     }
     //-------------------------------------------------------------------------------
 
@@ -131,7 +131,7 @@ public class professor extends user{
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "professor{" +
+        return "Professor{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", last_name='" + last_name + '\'' +

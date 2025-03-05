@@ -5,23 +5,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import soheil.demo.start.Repository.userRepository;
-import soheil.demo.start.model.user;
+import soheil.demo.start.repository.UserRepository;
+import soheil.demo.start.model.User;
 
 import java.util.Collections;
 
 @Service
-public class userDetailsServiceImpl  implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final userRepository userRepository;
+    private final UserRepository userRepository;
 
-    public userDetailsServiceImpl(userRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        user user = userRepository.findById(username)
+        User user = userRepository.findById(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),

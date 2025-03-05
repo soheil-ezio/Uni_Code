@@ -1,6 +1,6 @@
 package soheil.demo.start.DTO;
 
-public class userDTO {
+public class UserDTO {
 
     //Main Info.
     //-------------------------------------------------------------------------------
@@ -87,7 +87,7 @@ public class userDTO {
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "userDTO{" +
+        return "UserDTO{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +

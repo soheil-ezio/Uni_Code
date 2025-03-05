@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "student")
-public class student extends user{
+public class Student extends User {
 
     //Attributes.
     //-------------------------------------------------------------------------------
@@ -28,18 +28,18 @@ public class student extends user{
     //-------------------------------------------------------------------------------
     @ManyToOne
     @JoinColumn(name = "university_id")
-    private university university;
+    private University university;
 
     @ManyToMany(mappedBy = "students")
-    private Set<professor> professorList;
+    private Set<Professor> professorList;
     //-------------------------------------------------------------------------------
 
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    public student() {}
+    public Student() {}
 
-    public student(long id,
+    public Student(long id,
                    String name,
                    String last_name,
                    int student_id_number)
@@ -50,7 +50,7 @@ public class student extends user{
         this.student_id_number = student_id_number;
     }
 
-    public student(String name,
+    public Student(String name,
                    String last_name,
                    int student_id_number)
     {
@@ -59,7 +59,7 @@ public class student extends user{
         this.student_id_number = student_id_number;
     }
 
-    public student(String name,
+    public Student(String name,
                    String last_name,
                    int student_id_number,
                    String username,
@@ -107,19 +107,19 @@ public class student extends user{
         this.student_id_number = student_id_number;
     }
 
-    public soheil.demo.start.model.university getUniversity() {
+    public University getUniversity() {
         return university;
     }
 
-    public void setUniversity(soheil.demo.start.model.university university) {
+    public void setUniversity(University university) {
         this.university = university;
     }
 
-    public Set<professor> getProfessorList() {
+    public Set<Professor> getProfessorList() {
         return professorList;
     }
 
-    public void setProfessorList(Set<professor> professorList) {
+    public void setProfessorList(Set<Professor> professorList) {
         this.professorList = professorList;
     }
     //-------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ public class student extends user{
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "student{" +
+        return "Student{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", last_name='" + last_name + '\'' +
