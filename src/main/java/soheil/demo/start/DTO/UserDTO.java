@@ -8,11 +8,12 @@ public class UserDTO {
     private String password;
     private String role;
     private long universityId;
+    private long facultyId;
 
     //Students & Professors Essentials.
     //-------------------------------------------------------------------------------
     private String name;
-    private String last_Name;
+    private String last_name;
     private int student_id_number;
     private int professor_id_number;
 
@@ -50,6 +51,14 @@ public class UserDTO {
         this.universityId = universityId;
     }
 
+    public long getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(long facultyId) {
+        this.facultyId = facultyId;
+    }
+
     public String getName() {
         return name;
     }
@@ -58,12 +67,12 @@ public class UserDTO {
         this.name = name;
     }
 
-    public String getLast_Name() {
-        return last_Name;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setLast_Name(String last_Name) {
-        this.last_Name = last_Name;
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
     }
 
     public int getStudent_id_number() {
@@ -83,7 +92,7 @@ public class UserDTO {
     }
     //-------------------------------------------------------------------------------
 
-    //toString Method.
+    //toString Method.(This part if experimental !)
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
@@ -93,7 +102,7 @@ public class UserDTO {
                 ", role='" + role + '\'' +
                 ", universityId=" + universityId +
                 ", name='" + name + '\'' +
-                ", last_Name='" + last_Name + '\'' +
+                ", last_Name='" + last_name + '\'' +
                 ", student_id_number=" + student_id_number +
                 ", professor_id_number=" + professor_id_number +
                 '}';

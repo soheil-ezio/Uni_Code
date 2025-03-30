@@ -21,7 +21,7 @@ public class User {
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    public User() {}
+    protected User() {}
 
     public User(String username, String password) {
         this.username = username;
@@ -37,6 +37,7 @@ public class User {
 
     //Getters & Setters.
     //-------------------------------------------------------------------------------
+
     public String getUsername() {
         return username;
     }
@@ -60,10 +61,12 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
     //-------------------------------------------------------------------------------
 
     //toString Method.
     //-------------------------------------------------------------------------------
+
     @Override
     public String toString() {
         return "User{" +
@@ -72,5 +75,6 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
+
     //-------------------------------------------------------------------------------
 }

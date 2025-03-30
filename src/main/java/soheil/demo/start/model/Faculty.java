@@ -4,36 +4,33 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-@Entity
-@Table(name = "university")
-public class University {
+@Entity(name = "faculty")
+public class Faculty {
 
     //Attributes.
     //-------------------------------------------------------------------------------
     @Id
-    @Column(nullable = false, name = "name")
     private String name;
     //-------------------------------------------------------------------------------
 
     //Relational Attributes.
     //-------------------------------------------------------------------------------
-    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
-    private List<Faculty> faculty;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university")
+    private University university;
 
-    @OneToMany(mappedBy = "university",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<Professor> professors;
 
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
-    private List<Student> students;
+    private List<Student> Students;
     //-------------------------------------------------------------------------------
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    protected University() {}
+    protected Faculty() {};
 
-    public University(String name) {
-        this.name = name;
-    }
+    public Faculty(String name) {}
     //-------------------------------------------------------------------------------
 
     //Getters & Setters.
@@ -46,6 +43,14 @@ public class University {
         this.name = name;
     }
 
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
+    }
+
     public List<Professor> getProfessors() {
         return professors;
     }
@@ -55,30 +60,23 @@ public class University {
     }
 
     public List<Student> getStudents() {
-        return students;
+        return Students;
     }
 
     public void setStudents(List<Student> students) {
-        this.students = students;
-    }
-
-    public List<Faculty> getFaculty() {
-        return faculty;
-    }
-
-    public void setFaculty(List<Faculty> faculty) {
-        this.faculty = faculty;
+        Students = students;
     }
     //-------------------------------------------------------------------------------
 
+    //toString Method.
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "University{" +
+        return "Faculty{" +
                 "name='" + name + '\'' +
-                ", faculty=" + faculty +
+                ", university=" + university +
                 ", professors=" + professors +
-                ", students=" + students +
+                ", Students=" + Students +
                 '}';
     }
     //-------------------------------------------------------------------------------

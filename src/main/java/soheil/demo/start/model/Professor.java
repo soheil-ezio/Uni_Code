@@ -1,6 +1,7 @@
 package soheil.demo.start.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
 
 import java.util.Set;
 
@@ -10,9 +11,6 @@ public class Professor extends User {
 
     //Attributes.
     //-------------------------------------------------------------------------------
-    @Column(nullable = false, updatable = false, unique = true, name = "id")
-    private long id;
-
     @Column(nullable = false, name = "name")
     private String name;
 
@@ -25,32 +23,27 @@ public class Professor extends User {
 
     //Relational Attributes.
     //-------------------------------------------------------------------------------
-    @ManyToOne
-    @JoinColumn(name = "university_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_name")
     private University university;
 
-    @ManyToMany
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_name")
+    private Faculty faculty;
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "professor_student",
-            joinColumns = @JoinColumn(name = "professor_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id")
+            joinColumns = @JoinColumn(name = "professor_id_number"),
+            inverseJoinColumns = @JoinColumn(name = "student_id_number")
     )
-    private Set<Student> Students;
+    private Set<Student> students;
     //-------------------------------------------------------------------------------
 
     //Constructor
     //-------------------------------------------------------------------------------
-    public Professor() {}
-
-    public Professor(long id,
-                     String name,
-                     String last_name,
-                     int professor_id_number)
-    {
-        this.id = id;
-        this.name = name;
-        this.last_name = last_name;
-        this.professor_id_number = professor_id_number;
+    protected Professor() {
+        super();
     }
 
     public Professor(String name,
@@ -78,14 +71,6 @@ public class Professor extends User {
 
     //Setters & Getters.
     //-------------------------------------------------------------------------------
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -118,24 +103,33 @@ public class Professor extends User {
         this.university = university;
     }
 
-    public Set<Student> getStudents() {
-        return Students;
+    public Faculty getFaculty() {
+        return faculty;
     }
 
-    public void setStudents(Set<Student> Students) {
-        this.Students = Students;
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
     }
     //-------------------------------------------------------------------------------
 
-    //toString Method.
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
         return "Professor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", professor_id_number=" + professor_id_number +
+                ", university=" + university +
+                ", faculty=" + faculty +
+                ", students=" + students +
                 '}';
     }
     //-------------------------------------------------------------------------------

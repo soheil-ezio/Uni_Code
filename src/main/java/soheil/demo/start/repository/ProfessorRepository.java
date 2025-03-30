@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import soheil.demo.start.model.Professor;
 
 @Repository
-public interface ProfessorRepository extends JpaRepository<Professor, Long> {
+public interface ProfessorRepository extends JpaRepository<Professor, String> {
 }

@@ -2,8 +2,8 @@ package soheil.demo.start.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import soheil.demo.start.model.Student;
+import soheil.demo.start.model.Faculty;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, String> {
+public interface FacultyRepository extends JpaRepository<Faculty, Long> {
 }

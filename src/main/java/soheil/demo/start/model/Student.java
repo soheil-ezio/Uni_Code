@@ -1,6 +1,8 @@
 package soheil.demo.start.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.Set;
 
@@ -11,9 +13,6 @@ public class Student extends User {
 
     //Attributes.
     //-------------------------------------------------------------------------------
-    @Column(nullable = false, updatable = false, unique = true, name = "id")
-    private long id;
-
     @Column(nullable = false, name = "name")
     private String name;
 
@@ -26,9 +25,13 @@ public class Student extends User {
 
     //Relational Attributes.
     //-------------------------------------------------------------------------------
-    @ManyToOne
-    @JoinColumn(name = "university_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "university_name")
     private University university;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_name")
+    private Faculty faculty;
 
     @ManyToMany(mappedBy = "students")
     private Set<Professor> professorList;
@@ -37,17 +40,8 @@ public class Student extends User {
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    public Student() {}
-
-    public Student(long id,
-                   String name,
-                   String last_name,
-                   int student_id_number)
-    {
-        this.id = id;
-        this.name = name;
-        this.last_name = last_name;
-        this.student_id_number = student_id_number;
+    public Student() {
+        super();
     }
 
     public Student(String name,
@@ -75,14 +69,6 @@ public class Student extends User {
 
     //Getters & Setters.
     //-------------------------------------------------------------------------------
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -107,6 +93,14 @@ public class Student extends User {
         this.student_id_number = student_id_number;
     }
 
+    public Set<Professor> getProfessorList() {
+        return professorList;
+    }
+
+    public void setProfessorList(Set<Professor> professorList) {
+        this.professorList = professorList;
+    }
+
     public University getUniversity() {
         return university;
     }
@@ -115,12 +109,12 @@ public class Student extends User {
         this.university = university;
     }
 
-    public Set<Professor> getProfessorList() {
-        return professorList;
+    public Faculty getFaculty() {
+        return faculty;
     }
 
-    public void setProfessorList(Set<Professor> professorList) {
-        this.professorList = professorList;
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
     //-------------------------------------------------------------------------------
 
@@ -129,10 +123,12 @@ public class Student extends User {
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", student_id_number=" + student_id_number +
+                ", university=" + university +
+                ", faculty=" + faculty +
+                ", professorList=" + professorList +
                 '}';
     }
     //-------------------------------------------------------------------------------

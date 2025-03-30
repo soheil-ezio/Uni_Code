@@ -13,12 +13,12 @@ public class UniversityController {
 
     //Service declaration.
     //-------------------------------------------------------------------------------
-    private final UniversityService UNIVERSITY_SERVICE;
+    private final UniversityService universityService;
 
     //Constructor.
     //-------------------------------------------------------------------------------
-    public UniversityController(UniversityService UNIVERSITY_SERVICE) {
-        this.UNIVERSITY_SERVICE = UNIVERSITY_SERVICE;
+    public UniversityController(UniversityService universityService) {
+        this.universityService = universityService;
     }
     //-------------------------------------------------------------------------------
 
@@ -26,23 +26,23 @@ public class UniversityController {
     //-------------------------------------------------------------------------------
     @GetMapping("/details/{id}")
     public ResponseEntity<University> getUniversity(@PathVariable Long id) {
-        if (UNIVERSITY_SERVICE.getUniversity(id) == null) {
+        if (universityService.getUniversity(id) == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(UNIVERSITY_SERVICE.getUniversity(id));
+        return ResponseEntity.ok(universityService.getUniversity(id));
     }
 
     @GetMapping
     public ResponseEntity<List<University>> getUniversities() {
-        if (UNIVERSITY_SERVICE.getAllUniversities() == null) {
+        if (universityService.getAllUniversities() == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(UNIVERSITY_SERVICE.getAllUniversities());
+        return ResponseEntity.ok(universityService.getAllUniversities());
     }
 
     @PostMapping("/create")
     public ResponseEntity<University> addUniversity(@RequestBody University university) {
-        return ResponseEntity.ok(UNIVERSITY_SERVICE.addUniversity(university));
+        return ResponseEntity.ok(universityService.addUniversity(university));
     }
     //-------------------------------------------------------------------------------
 }

@@ -2,6 +2,8 @@ package soheil.demo.start.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import soheil.demo.start.DTO.DtoMapper;
+import soheil.demo.start.DTO.UserDTO;
 import soheil.demo.start.model.Student;
 import soheil.demo.start.service.StudentService;
 
@@ -13,44 +15,56 @@ public class StudentController {
 
     //Service declaration.
     //-------------------------------------------------------------------------------
-    private final StudentService STUDENT_SERVICE;
+    private final StudentService studentService;
+    private final DtoMapper dtoMapper;
 
     //Constructor.
     //-------------------------------------------------------------------------------
-    public StudentController(StudentService STUDENT_SERVICE) {
-        this.STUDENT_SERVICE = STUDENT_SERVICE;
+    public StudentController(StudentService studentService,
+                             DtoMapper dtoMapper)
+    {
+        this.studentService = studentService;
+        this.dtoMapper = dtoMapper;
     }
     //-------------------------------------------------------------------------------
 
     //End-Points. ( <C-R-U-D> End-points )
     //-------------------------------------------------------------------------------
     @GetMapping
-    public ResponseEntity<List<Student>> getAllStudents() {
-        if (STUDENT_SERVICE.getAllStudents() == null) {
+    public ResponseEntity<List<UserDTO>> getAllStudents() {
+        if (studentService.findAll() == null) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(STUDENT_SERVICE.getAllStudents());
+        return ResponseEntity.ok
+                (
+                        studentService
+                                .findAll()
+                                .stream()
+                                .map(dtoMapper::studentToUserDTO)
+                                .toList()
+                );
     }
 
-    @GetMapping("/details/{id}")
-    public ResponseEntity<Student> findStudent(@PathVariable long id) {
-        if (STUDENT_SERVICE.getStudentById(id) == null) {
+    @GetMapping("/details/{username}")
+    public ResponseEntity<UserDTO> findStudent(@PathVariable String username) {
+        if (studentService.findById(username).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(STUDENT_SERVICE.getStudentById(id));
+        return ResponseEntity.ok(dtoMapper.studentToUserDTO(studentService.findById(username).get()));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(STUDENT_SERVICE.addStudent(student));
+    public ResponseEntity<Student> addStudent(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(studentService.add(dtoMapper.userDTOToStudent(userDTO)));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable long id) {
-        if (STUDENT_SERVICE.getStudentById(id) == null) {
+    @PutMapping("/update/{username}")
+    public ResponseEntity<UserDTO> updateStudent(@RequestBody UserDTO userDTO, @PathVariable String username) {
+        if (studentService.findById(username).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(STUDENT_SERVICE.updateStudent(student, id));
+        return ResponseEntity.ok(dtoMapper
+                .studentToUserDTO(studentService.update(dtoMapper.userDTOToStudent(userDTO), username)));
     }
     //-------------------------------------------------------------------------------
 }
