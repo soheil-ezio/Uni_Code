@@ -24,13 +24,21 @@ public class Faculty {
 
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<Student> Students;
+
+    @OneToMany(mappedBy = "faculty")
+    private List<Course> courses;
+
+    @OneToOne
+    private Professor facultyHeadProfessor;
     //-------------------------------------------------------------------------------
 
     //Constructors.
     //-------------------------------------------------------------------------------
     protected Faculty() {};
 
-    public Faculty(String name) {}
+    public Faculty(String name) {
+        this.name = name;
+    }
     //-------------------------------------------------------------------------------
 
     //Getters & Setters.
@@ -66,6 +74,22 @@ public class Faculty {
     public void setStudents(List<Student> students) {
         Students = students;
     }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public Professor getFacultyHeadProfessor() {
+        return facultyHeadProfessor;
+    }
+
+    public void setFacultyHeadProfessor(Professor facultyHeadProfessor) {
+        this.facultyHeadProfessor = facultyHeadProfessor;
+    }
     //-------------------------------------------------------------------------------
 
     //toString Method.
@@ -77,6 +101,7 @@ public class Faculty {
                 ", university=" + university +
                 ", professors=" + professors +
                 ", Students=" + Students +
+                ", courses=" + courses +
                 '}';
     }
     //-------------------------------------------------------------------------------

@@ -4,67 +4,62 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
-
 @Entity
-@Table(name = "student")
-public class Student extends User {
+@Table(name = "course")
+public class Course {
 
     //Attributes.
     //-------------------------------------------------------------------------------
-    @Column(nullable = false, name = "name")
+    @Id
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false, name = "last_name")
-    private String last_name;
-
-    @Column(nullable = false, name = "student_id_number")
-    private int student_id_number;
+    @Column(name = "credit")
+    private short credit;
     //-------------------------------------------------------------------------------
 
-    //Relational Attributes.
+    //Relational attributes.
     //-------------------------------------------------------------------------------
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "university_name")
-    private University university;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "faculty_name")
-    private Faculty faculty;
-
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MarkCourseStudent> markCourseStudents;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
+    private University university;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Faculty faculty;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "course_student",
+            joinColumns = @JoinColumn(name = "course_name"),
+            inverseJoinColumns = @JoinColumn(name = "student_username")
+    )
+    private List<Student> students;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "course_professor",
+            joinColumns = @JoinColumn(name = "course_name"),
+            inverseJoinColumns = @JoinColumn(name = "professor_username")
+    )
+    private List<Professor> professors;
+
+    @OneToOne(fetch = FetchType.LAZY)
     private UniClass uniClass;
     //-------------------------------------------------------------------------------
 
     //Constructors.
     //-------------------------------------------------------------------------------
-    public Student() {
-        super();
-    }
+    protected Course() {}
 
-    public Student(String name,
-                   String last_name,
-                   int student_id_number)
+    public Course(String name) {}
+
+    public Course(String name,
+                  short credit)
     {
         this.name = name;
-        this.last_name = last_name;
-        this.student_id_number = student_id_number;
-    }
-
-    public Student(String name,
-                   String last_name,
-                   int student_id_number,
-                   String username,
-                   String password,
-                   String role)
-    {
-        super(username, password, role);
-        this.name = name;
-        this.last_name = last_name;
-        this.student_id_number = student_id_number;
+        this.credit = credit;
     }
     //-------------------------------------------------------------------------------
 
@@ -78,20 +73,20 @@ public class Student extends User {
         this.name = name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public short getCredit() {
+        return credit;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setCredit(short credit) {
+        this.credit = credit;
     }
 
-    public int getStudent_id_number() {
-        return student_id_number;
+    public List<MarkCourseStudent> getMarkCourseStudents() {
+        return markCourseStudents;
     }
 
-    public void setStudent_id_number(int student_id_number) {
-        this.student_id_number = student_id_number;
+    public void setMarkCourseStudents(List<MarkCourseStudent> markCourseStudents) {
+        this.markCourseStudents = markCourseStudents;
     }
 
     public University getUniversity() {
@@ -110,12 +105,20 @@ public class Student extends User {
         this.faculty = faculty;
     }
 
-    public List<MarkCourseStudent> getMarkCourseStudents() {
-        return markCourseStudents;
+    public List<Student> getStudents() {
+        return students;
     }
 
-    public void setMarkCourseStudents(List<MarkCourseStudent> markCourseStudents) {
-        this.markCourseStudents = markCourseStudents;
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Professor> getProfessors() {
+        return professors;
+    }
+
+    public void setProfessors(List<Professor> professors) {
+        this.professors = professors;
     }
 
     public UniClass getUniClass() {
@@ -127,17 +130,18 @@ public class Student extends User {
     }
     //-------------------------------------------------------------------------------
 
-    //toString Method.
+    //toString method.
     //-------------------------------------------------------------------------------
     @Override
     public String toString() {
-        return "Student{" +
+        return "Course{" +
                 "name='" + name + '\'' +
-                ", last_name='" + last_name + '\'' +
-                ", student_id_number=" + student_id_number +
+                ", credit=" + credit +
+                ", markCourseStudents=" + markCourseStudents +
                 ", university=" + university +
                 ", faculty=" + faculty +
-                ", markCourseStudents=" + markCourseStudents +
+                ", students=" + students +
+                ", professors=" + professors +
                 ", uniClass=" + uniClass +
                 '}';
     }

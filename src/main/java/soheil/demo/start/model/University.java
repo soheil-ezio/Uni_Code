@@ -25,6 +25,9 @@ public class University {
 
     @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
     private List<Student> students;
+
+    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
+    private List<Course> courses;
     //-------------------------------------------------------------------------------
 
     //Constructors.
@@ -69,6 +72,14 @@ public class University {
     public void setFaculty(List<Faculty> faculty) {
         this.faculty = faculty;
     }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
     //-------------------------------------------------------------------------------
 
     //-------------------------------------------------------------------------------
@@ -79,6 +90,7 @@ public class University {
                 ", faculty=" + faculty +
                 ", professors=" + professors +
                 ", students=" + students +
+                ", courses=" + courses +
                 '}';
     }
     //-------------------------------------------------------------------------------

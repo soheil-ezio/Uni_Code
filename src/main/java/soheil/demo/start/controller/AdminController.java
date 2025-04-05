@@ -7,6 +7,8 @@ import soheil.demo.start.model.University;
 import soheil.demo.start.service.AdminService;
 import soheil.demo.start.service.UniversityService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/admins")
 public class AdminController {
@@ -33,14 +35,21 @@ public class AdminController {
         return ResponseEntity.ok("Welcome");
     }
 
-    @PostMapping("/create/university")
-    public ResponseEntity<University> addUniversity(@RequestBody University university) {
-        return ResponseEntity.ok(universityService.addUniversity(university));
-    }
-
     @PostMapping("/create/user")
     public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
         return adminService.creatUser(userDTO);
+    }
+
+    @PostMapping("/create/university/{universityNames}")
+    public ResponseEntity<String> createUniversity(@PathVariable List<String> universityNames) {
+        return adminService.addUniversities(universityNames);
+    }
+
+    @PostMapping("/create/faculty/{facultyNames}/{universityName}")
+    public ResponseEntity<String> createFaculty(@PathVariable List<String> facultyNames,
+                                                @PathVariable String universityName)
+    {
+        return adminService.addFaculties(facultyNames, universityName);
     }
     //-------------------------------------------------------------------------------
 }

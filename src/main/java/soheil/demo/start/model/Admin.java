@@ -1,6 +1,5 @@
 package soheil.demo.start.model;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity

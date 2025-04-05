@@ -7,8 +7,8 @@ public class UserDTO {
     private String username;
     private String password;
     private String role;
-    private long universityId;
-    private long facultyId;
+    private String universityName;
+    private String facultyName;
 
     //Students & Professors Essentials.
     //-------------------------------------------------------------------------------
@@ -19,6 +19,7 @@ public class UserDTO {
 
     //Getters & Setters.
     //-------------------------------------------------------------------------------
+
     public String getUsername() {
         return username;
     }
@@ -43,20 +44,20 @@ public class UserDTO {
         this.role = role;
     }
 
-    public long getUniversityId() {
-        return universityId;
+    public String getUniversityName() {
+        return universityName;
     }
 
-    public void setUniversityId(long universityId) {
-        this.universityId = universityId;
+    public void setUniversityName(String universityName) {
+        this.universityName = universityName;
     }
 
-    public long getFacultyId() {
-        return facultyId;
+    public String getFacultyName() {
+        return facultyName;
     }
 
-    public void setFacultyId(long facultyId) {
-        this.facultyId = facultyId;
+    public void setFacultyName(String facultyName) {
+        this.facultyName = facultyName;
     }
 
     public String getName() {
@@ -90,6 +91,7 @@ public class UserDTO {
     public void setProfessor_id_number(int professor_id_number) {
         this.professor_id_number = professor_id_number;
     }
+
     //-------------------------------------------------------------------------------
 
     //toString Method.(This part if experimental !)
@@ -100,7 +102,7 @@ public class UserDTO {
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", universityId=" + universityId +
+                ", universityId=" + universityName +
                 ", name='" + name + '\'' +
                 ", last_Name='" + last_name + '\'' +
                 ", student_id_number=" + student_id_number +

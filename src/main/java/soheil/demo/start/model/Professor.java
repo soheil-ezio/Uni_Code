@@ -3,6 +3,7 @@ package soheil.demo.start.model;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,13 +32,15 @@ public class Professor extends User {
     @JoinColumn(name = "faculty_name")
     private Faculty faculty;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "professor_student",
-            joinColumns = @JoinColumn(name = "professor_id_number"),
-            inverseJoinColumns = @JoinColumn(name = "student_id_number")
-    )
-    private Set<Student> students;
+    @ManyToMany(mappedBy = "professors")
+    private List<Course> courseList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "class_id")
+    private UniClass uniClass;
+
+    @OneToOne(mappedBy = "facultyHeadProfessor")
+    private Faculty facultyHeadId;
     //-------------------------------------------------------------------------------
 
     //Constructor
@@ -111,12 +114,20 @@ public class Professor extends User {
         this.faculty = faculty;
     }
 
-    public Set<Student> getStudents() {
-        return students;
+    public List<Course> getCourseList() {
+        return courseList;
     }
 
-    public void setStudents(Set<Student> students) {
-        this.students = students;
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
+    }
+
+    public UniClass getUniClass() {
+        return uniClass;
+    }
+
+    public void setUniClass(UniClass uniClass) {
+        this.uniClass = uniClass;
     }
     //-------------------------------------------------------------------------------
 
@@ -129,7 +140,8 @@ public class Professor extends User {
                 ", professor_id_number=" + professor_id_number +
                 ", university=" + university +
                 ", faculty=" + faculty +
-                ", students=" + students +
+                ", courseList=" + courseList +
+                ", uniClass=" + uniClass +
                 '}';
     }
     //-------------------------------------------------------------------------------

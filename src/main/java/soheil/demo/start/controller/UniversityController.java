@@ -24,12 +24,12 @@ public class UniversityController {
 
     //End-Points. ( <C-R-U-D> End-points )
     //-------------------------------------------------------------------------------
-    @GetMapping("/details/{id}")
-    public ResponseEntity<University> getUniversity(@PathVariable Long id) {
-        if (universityService.getUniversity(id) == null) {
+    @GetMapping("/details/{name}")
+    public ResponseEntity<University> getUniversity(@PathVariable String name) {
+        if (universityService.getUniversity(name) == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(universityService.getUniversity(id));
+        return ResponseEntity.ok(universityService.getUniversity(name));
     }
 
     @GetMapping
