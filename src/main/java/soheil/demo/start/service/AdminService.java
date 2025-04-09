@@ -52,8 +52,8 @@ public class AdminService {
             }else {
 
                 Student student = dtoMapper.userDTOToStudent(userDTO);
-                student.setUniversity(universityService.getUniversity(userDTO.getUniversityName()));
-                student.setFaculty(facultyService.getFaculty(userDTO.getFacultyName()));
+                student.setUniversity(universityService.get(userDTO.getUniversityName()));
+                student.setFaculty(facultyService.get(userDTO.getFacultyName()));
                 studentService.add(student);
 
                 return ResponseEntity.ok("User created successfully :\n" + studentService.findById(userDTO.getUsername()).get());
@@ -67,8 +67,8 @@ public class AdminService {
             }else {
 
                 Professor professor = dtoMapper.userDTOToProfessor(userDTO);
-                professor.setUniversity(universityService.getUniversity(userDTO.getUniversityName()));
-                professor.setFaculty(facultyService.getFaculty(userDTO.getFacultyName()));
+                professor.setUniversity(universityService.get(userDTO.getUniversityName()));
+                professor.setFaculty(facultyService.get(userDTO.getFacultyName()));
                 professorService.add(professor);
 
                 return ResponseEntity.ok("User created successfully :\n" + professorService.findById(userDTO.getUsername()).get());
@@ -77,59 +77,59 @@ public class AdminService {
             return ResponseEntity.badRequest().body("Unrecognized entries !");
     }
 
-    public ResponseEntity<String> addUniversities(List<String> universityNames) {
-        universityNames.removeIf(name -> universityService.isPresent(name));
-        if (universityNames.isEmpty()) {
-            return ResponseEntity.ok().body("universities already exist !");
-        }else {
-            List<University> universities = new ArrayList<>();
-            for (String universityName : universityNames) {
-                universities.add(universityService.getUniversity(universityName));
-            }
-            universityService.addUniversities(universities);
-            return ResponseEntity.ok().body("Universities created successfully :\n" + universityNames);
-        }
-    }
+//    public String addUniversities(List<String> universityNames) {
+//        universityNames.removeIf(name -> universityService.isPresent(name));
+//        if (universityNames.isEmpty()) {
+//            return "universities already exist !";
+//        }else {
+//            List<University> universities = new ArrayList<>();
+//            for (String universityName : universityNames) {
+//                universities.add(universityService.getUniversity(universityName));
+//            }
+//            universityService.addUniversities(universities);
+//            return "Universities created successfully :\n" + universityNames;
+//        }
+//    }
 
-    public ResponseEntity<String> addUniversity(String universityName) {
-        if (universityService.isPresent(universityName)) {
-            return ResponseEntity.badRequest().body("University already exists !");
-        }
-        University university = new University(universityName);
-        universityService.addUniversity(university);
-        return ResponseEntity.ok("University created successfully :\n" + universityName);
-    }
+//    public ResponseEntity<String> addUniversity(String universityName) {
+//        if (universityService.isPresent(universityName)) {
+//            return ResponseEntity.badRequest().body("University already exists !");
+//        }
+//        University university = new University(universityName);
+//        universityService.addUniversity(university);
+//        return ResponseEntity.ok("University created successfully :\n" + universityName);
+//    }
 
-    public ResponseEntity<String> addFaculties(List<String> facultyNames, String universityName) {
-        List<String> faculties = new ArrayList<>();
-        if (universityService.isPresent(universityName)) {
-            for (Faculty faculty : universityService.getUniversity(universityName).getFaculty()) {
-                faculties.add(faculty.getName());
-            }
-        }else {
-            return ResponseEntity.badRequest().body("university does not exist !");
-        }
-        faculties.removeIf(name -> facultyService.isPresent(name));
-        if (faculties.isEmpty()) {
-            return ResponseEntity.badRequest().body("Faculties already exist !");
-        }else {
-            List<Faculty> faculties1 = new ArrayList<>();
-            for (String facultyName : faculties) {
-                faculties1.add(facultyService.getFaculty(facultyName));
-            }
-            facultyService.addFaculties(faculties1);
-            return ResponseEntity.ok().body("Faculties created successfully :\n" + faculties);
-        }
-    }
-
-    public ResponseEntity<String> addFaculty(String facultyName) {
-        if (facultyService.isPresent(facultyName)) {
-            return ResponseEntity.badRequest().body("Faculty already exists !");
-        }
-        Faculty faculty = new Faculty(facultyName);
-        facultyService.addFaculty(faculty);
-        return ResponseEntity.ok("Faculty created successfully :\n" + facultyName);
-    }
+//    public ResponseEntity<String> addFaculties(List<String> facultyNames, String universityName) {
+//        List<String> faculties = new ArrayList<>();
+//        if (universityService.isPresent(universityName)) {
+//            for (Faculty faculty : universityService.get(universityName).getFaculty()) {
+//                faculties.add(faculty.getName());
+//            }
+//        }else {
+//            return ResponseEntity.badRequest().body("university does not exist !");
+//        }
+//        faculties.removeIf(name -> facultyService.isPresent(name));
+//        if (faculties.isEmpty()) {
+//            return ResponseEntity.badRequest().body("Faculties already exist !");
+//        }else {
+//            List<Faculty> faculties1 = new ArrayList<>();
+//            for (String facultyName : faculties) {
+//                faculties1.add(facultyService.getFaculty(facultyName));
+//            }
+//            facultyService.addFaculties(faculties1);
+//            return ResponseEntity.ok().body("Faculties created successfully :\n" + faculties);
+//        }
+//    }
+//
+//    public ResponseEntity<String> addFaculty(String facultyName) {
+//        if (facultyService.isPresent(facultyName)) {
+//            return ResponseEntity.badRequest().body("Faculty already exists !");
+//        }
+//        Faculty faculty = new Faculty(facultyName);
+//        facultyService.addFaculty(faculty);
+//        return ResponseEntity.ok("Faculty created successfully :\n" + facultyName);
+//    }
 
     public ResponseEntity<String> addCourses(HashMap<String, Short> courses) {
         for (String courseName : courses.keySet()) {
@@ -160,7 +160,7 @@ public class AdminService {
     //-------------------------------------------------------------------------------
     public ResponseEntity<String> AverageMarkOfFaculty(String facultyName) {
         if (facultyService.isPresent(facultyName)) {
-            Faculty faculty = facultyService.getFaculty(facultyName);
+            Faculty faculty = facultyService.get(facultyName);
             List<Short> marks = new ArrayList<>();
 
             if (!faculty.getCourses().isEmpty()) {
@@ -222,19 +222,6 @@ public class AdminService {
             }
         }else
             return ResponseEntity.badRequest().body("Student does not exist !");
-    }
-
-    public ResponseEntity<String> setFacultyHead(String facultyName, String ProfessorUserName) {
-        if (facultyService.isPresent(facultyName)) {
-            Faculty faculty = facultyService.getFaculty(facultyName);
-            if (professorService.findById(ProfessorUserName).isPresent()) {
-                faculty.setFacultyHeadProfessor(professorService.findById(ProfessorUserName).get());
-                facultyService.addFaculty(faculty);
-                return ResponseEntity.ok("Faculty : " + facultyName + "\nHead professor : " + facultyName);
-            }else
-                return ResponseEntity.badRequest().body("The Professor does not exist !");
-        }else
-            return ResponseEntity.badRequest().body("Faculty does not exist !");
     }
     //-------------------------------------------------------------------------------
 

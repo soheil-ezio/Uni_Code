@@ -1,45 +1,75 @@
 package soheil.demo.start.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soheil.demo.start.model.Course;
+import soheil.demo.start.model.Faculty;
 import soheil.demo.start.repository.CourseRepository;
+import soheil.demo.start.service.general_interface.GeneralInterface;
 
 import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class CourseService {
+public class CourseService implements GeneralInterface<Course> {
 
     private final CourseRepository courseRepository;
-    private final FacultyService facultyService;
+    private final GeneralInterface<Faculty> facultyService;
 
     public CourseService(CourseRepository courseRepository,
-                         FacultyService facultyService)
+                         @Qualifier("facultyService") GeneralInterface<Faculty> facultyService)
     {
         this.courseRepository = courseRepository;
         this.facultyService = facultyService;
     }
 
-    public void addCourse(String courseName, short credit) {
-        courseRepository.save(new Course(courseName, credit));
-    }
-
-    public void addCourses(HashMap<String, Course> courses) {
-        courseRepository.saveAll(courses.values());
-    }
-
-    public void deleteCourse(String courseName) {
+    public Course get(String courseName, short credit) {
         if (courseRepository.findById(courseName).isPresent()) {
-            courseRepository.deleteById(courseName);
+            return courseRepository.findById(courseName).get();
+        }
+        return null;
+    }
+
+    public String getAll() {
+        String response = courseRepository.findAll().toString();
+        if (response.isEmpty()) {
+            return null;
+        }
+        return "Course list :" + response;
+    }
+
+    public String add(String courseName, String credit) {
+        if (isPresent(courseName)) {
+            return "Course already exists !" + courseName;
+        }
+        Course course = new Course(courseName, Short.parseShort(credit));
+        creatCourse(course);
+        return "Course created successfully :\n" + courseName;
+    }
+
+    public String addCourses(HashMap<String, Short> courses, String facultyName) {
+        for (String courseName : courses.keySet()) {
+            if (isPresent(courseName)) {
+                courses.remove(courseName);
+            }
+        }
+        if (courses.isEmpty()) {
+            return "Courses already exist !";
+        }else {
+            for (String courseName : courses.keySet()) {
+                Course course = new Course(courseName, (short) courses.get(courseName));
+                course.setFaculty(facultyService.get(facultyName));
+                courseRepository.save(new Course(courseName, (short) courses.get(courseName)));
+            }
+            return "Courses created successfully :\n" + courses;
         }
     }
 
-    public Course getCourse(String courseName, short credit) {
-        return courseRepository.findById(courseName).get();
-    }
-
-    public List<Course> getAllCourses() {
-            return courseRepository.findAll();
+    public void remove(String courseName) {
+        if (courseRepository.findById(courseName).isPresent()) {
+            courseRepository.deleteById(courseName);
+        }
     }
 
     public boolean isPresent(String name) {
@@ -49,9 +79,14 @@ public class CourseService {
     public void setFaculty(String courseName, String facultyName) {
         courseRepository.findById(courseName).ifPresent(
                 course -> {
-                    course.setFaculty(facultyService.getFaculty(facultyName));
+                    course.setFaculty(facultyService.get(facultyName));
                     courseRepository.save(course);
                 }
         );
+    }
+
+    //DefaultCrud.
+    public void creatCourse(Course course) {
+        courseRepository.save(course);
     }
 }

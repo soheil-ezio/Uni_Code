@@ -25,24 +25,46 @@ public class UniversityController {
     //End-Points. ( <C-R-U-D> End-points )
     //-------------------------------------------------------------------------------
     @GetMapping("/details/{name}")
-    public ResponseEntity<University> getUniversity(@PathVariable String name) {
-        if (universityService.getUniversity(name) == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<String> getUniversity(@PathVariable String name) {
+        if (universityService.isPresent(name)) {
+            return ResponseEntity.ok(universityService.get(name).toString());
         }
-        return ResponseEntity.ok(universityService.getUniversity(name));
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<University>> getUniversities() {
-        if (universityService.getAllUniversities() == null) {
+    public ResponseEntity<String> getUniversities() {
+        if (universityService.getAll().isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(universityService.getAllUniversities());
+        return ResponseEntity.ok(universityService.getAll());
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<University> addUniversity(@RequestBody University university) {
-        return ResponseEntity.ok(universityService.addUniversity(university));
+    @PostMapping("/create/university/{universityName}")
+    public ResponseEntity<String> createUniversity(@PathVariable String universityName) {
+        String response = universityService.add(universityName, null);
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.badRequest().body("University already exists !");
+    }
+
+    @PostMapping("/create/university/{universityNames}")
+    public ResponseEntity<String> createUniversities(@PathVariable List<String> universityNames) {
+        String response = universityService.addMultiple(universityNames, null);
+        if (response != null) {
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.badRequest().body("University names already exist !");
+    }
+
+    @DeleteMapping("/delete/university/{universityName}")
+    public ResponseEntity<String> deleteUniversity(@PathVariable String universityName) {
+        if (universityService.isPresent(universityName)) {
+            universityService.remove(universityName);
+            return ResponseEntity.ok("University " + universityName + " is deleted !");
+        }
+        return ResponseEntity.badRequest().body("University " + universityName + " Not Found !");
     }
     //-------------------------------------------------------------------------------
 }

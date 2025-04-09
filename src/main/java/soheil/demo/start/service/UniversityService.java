@@ -3,12 +3,13 @@ package soheil.demo.start.service;
 import org.springframework.stereotype.Service;
 import soheil.demo.start.repository.UniversityRepository;
 import soheil.demo.start.model.University;
-import soheil.demo.start.service.general_service.CrudService;
+import soheil.demo.start.service.general_interface.GeneralInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class UniversityService {
+@Service("universityService")
+public class UniversityService implements GeneralInterface<University> {
 
     //repository declaration.
     //-------------------------------------------------------------------------------
@@ -23,33 +24,47 @@ public class UniversityService {
 
     //Methods.
     //-------------------------------------------------------------------------------
-    public University getUniversity(String name) {
+    public University get(String name) {
         if (universityRepository.findById(name).isPresent()) {
-            return universityRepository.findById(name).get();
+            return universityRepository.getReferenceById(name);
         }
         return null;
     }
 
-    public List<University> getAllUniversities() {
+    public String getAll() {
         if (universityRepository.findAll().isEmpty()) {
             return null;
         }
-        return universityRepository.findAll();
+        return "Universities :\n" + universityRepository.findAll();
     }
 
-    public University addUniversity(University university) {
-        return universityRepository.save(university);
+    public String add(String universityName, String name) {
+        if (isPresent(universityName)) {
+            universityRepository.save(new University(universityName));
+            return ("University created successfully :\n" + universityName);
+        }
+        return null;
     }
 
-    public void addUniversities(List<University> universities) {
-        universityRepository.saveAll(universities);
+    public String addMultiple(List<String> universityNames, String name) {
+        universityNames.removeIf(this::isPresent);
+        if (universityNames.isEmpty()) {
+            return null;
+        }else {
+            List<University> universities = new ArrayList<>();
+            for (String universityName : universityNames) {
+                universities.add(universityRepository.getReferenceById(universityName));
+            }
+            universityRepository.saveAll(universities);
+            return ("Universities created successfully :\n" + universityNames);
+        }
     }
 
     public boolean isPresent(String name) {
         return universityRepository.findById(name).isPresent();
     }
 
-    public void removeUniversity(String name) {
+    public void remove(String name) {
         universityRepository.deleteById(name);
     }
     //-------------------------------------------------------------------------------
