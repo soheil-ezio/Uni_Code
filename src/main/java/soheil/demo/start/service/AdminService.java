@@ -131,29 +131,29 @@ public class AdminService {
 //        return ResponseEntity.ok("Faculty created successfully :\n" + facultyName);
 //    }
 
-    public ResponseEntity<String> addCourses(HashMap<String, Short> courses) {
-        for (String courseName : courses.keySet()) {
-            if (courseService.isPresent(courseName)) {
-                courses.remove(courseName);
-            }
-        }
-        if (courses.isEmpty()) {
-            return ResponseEntity.badRequest().body("Courses already exist !");
-        }else {
-            for (String courseName : courses.keySet()) {
-                courseService.addCourse(courseName, (short) courses.get(courseName));
-            }
-            return ResponseEntity.ok("Courses created successfully :\n" + courses);
-        }
-    }
-
-    public ResponseEntity<String> addCourse(String name, short credit) {
-        if (courseService.isPresent(name)) {
-            return ResponseEntity.badRequest().body("Course already exists !");
-        }
-        courseService.addCourse(name, credit);
-        return ResponseEntity.ok("Course created successfully :\n" + name);
-    }
+//    public ResponseEntity<String> addCourses(HashMap<String, Short> courses) {
+//        for (String courseName : courses.keySet()) {
+//            if (courseService.isPresent(courseName)) {
+//                courses.remove(courseName);
+//            }
+//        }
+//        if (courses.isEmpty()) {
+//            return ResponseEntity.badRequest().body("Courses already exist !");
+//        }else {
+//            for (String courseName : courses.keySet()) {
+//                courseService.addCourse(courseName, (short) courses.get(courseName));
+//            }
+//            return ResponseEntity.ok("Courses created successfully :\n" + courses);
+//        }
+//    }
+//
+//    public ResponseEntity<String> addCourse(String name, short credit) {
+//        if (courseService.isPresent(name)) {
+//            return ResponseEntity.badRequest().body("Course already exists !");
+//        }
+//        courseService.addCourse(name, credit);
+//        return ResponseEntity.ok("Course created successfully :\n" + name);
+//    }
     //-------------------------------------------------------------------------------
 
     //Required methods.
@@ -186,7 +186,7 @@ public class AdminService {
 
     public ResponseEntity<String> averageMarkOfCourse(String courseName, short credit) {
         if (courseService.isPresent(courseName)) {
-            Course course = courseService.getCourse(courseName, credit);
+            Course course = courseService.get(courseName);
             List<MarkCourseStudent> markCourseStudents = course.getMarkCourseStudents();
             if (!markCourseStudents.isEmpty()) {
                 OptionalDouble average = markCourseStudents.stream().map(MarkCourseStudent::getMark)

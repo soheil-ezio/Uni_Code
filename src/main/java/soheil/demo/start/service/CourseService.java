@@ -1,5 +1,6 @@
 package soheil.demo.start.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,21 +13,30 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class CourseService implements GeneralInterface<Course> {
+@Transactional
+public class CourseService {
 
+    //Variable declaration.
+    //-------------------------------------------------------------------------------
     private final CourseRepository courseRepository;
     private final GeneralInterface<Faculty> facultyService;
+    //-------------------------------------------------------------------------------
 
+    //Constructor.
+    //-------------------------------------------------------------------------------
     public CourseService(CourseRepository courseRepository,
                          @Qualifier("facultyService") GeneralInterface<Faculty> facultyService)
     {
         this.courseRepository = courseRepository;
         this.facultyService = facultyService;
     }
+    //-------------------------------------------------------------------------------
 
-    public Course get(String courseName, short credit) {
+    //Methods.
+    //-------------------------------------------------------------------------------
+    public Course get(String courseName) {
         if (courseRepository.findById(courseName).isPresent()) {
-            return courseRepository.findById(courseName).get();
+            return courseRepository.getReferenceById(courseName);
         }
         return null;
     }
@@ -48,6 +58,10 @@ public class CourseService implements GeneralInterface<Course> {
         return "Course created successfully :\n" + courseName;
     }
 
+    public String addMultiple(List<String> names, String name) {
+        return "Nothing";
+    }
+
     public String addCourses(HashMap<String, Short> courses, String facultyName) {
         for (String courseName : courses.keySet()) {
             if (isPresent(courseName)) {
@@ -59,6 +73,10 @@ public class CourseService implements GeneralInterface<Course> {
         }else {
             for (String courseName : courses.keySet()) {
                 Course course = new Course(courseName, (short) courses.get(courseName));
+                Faculty faculty = facultyService.get(facultyName);
+                if (faculty.getUniversity() == null) {
+                    return "Faculty does not belong to any University!";
+                }
                 course.setFaculty(facultyService.get(facultyName));
                 courseRepository.save(new Course(courseName, (short) courses.get(courseName)));
             }
@@ -84,9 +102,14 @@ public class CourseService implements GeneralInterface<Course> {
                 }
         );
     }
+    //-------------------------------------------------------------------------------
 
-    //DefaultCrud.
-    public void creatCourse(Course course) {
+    //DefaultCreationMethod.
+    public boolean creatCourse(Course course) {
+        if (isPresent(course.getName())) {
+            return false;
+        }
         courseRepository.save(course);
+        return true;
     }
 }

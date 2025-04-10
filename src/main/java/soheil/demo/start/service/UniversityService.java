@@ -1,5 +1,6 @@
 package soheil.demo.start.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import soheil.demo.start.repository.UniversityRepository;
 import soheil.demo.start.model.University;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("universityService")
+@Transactional
 public class UniversityService implements GeneralInterface<University> {
 
     //repository declaration.

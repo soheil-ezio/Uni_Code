@@ -1,10 +1,6 @@
 package soheil.demo.start.service.general_interface;
 
-import jakarta.persistence.Entity;
-import soheil.demo.start.model.University;
-
 import java.util.List;
-import java.util.Optional;
 
 public interface GeneralInterface<T> {
     public T get(String name);

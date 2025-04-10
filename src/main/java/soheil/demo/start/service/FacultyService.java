@@ -1,5 +1,6 @@
 package soheil.demo.start.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("facultyService")
+@Transactional
 public class FacultyService implements GeneralInterface<Faculty> {
 
     //repository declaration.
@@ -114,4 +116,12 @@ public class FacultyService implements GeneralInterface<Faculty> {
     }
     //-------------------------------------------------------------------------------
 
+    //Default Creation Method !.
+    public boolean createFaculty(Faculty faculty) {
+        if (isPresent(faculty.getName())) {
+            return false;
+        }
+        facultyRepository.save(faculty);
+        return true;
+    }
 }

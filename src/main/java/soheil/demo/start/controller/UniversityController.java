@@ -2,7 +2,6 @@ package soheil.demo.start.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soheil.demo.start.model.University;
 import soheil.demo.start.service.UniversityService;
 
 import java.util.List;
@@ -14,6 +13,7 @@ public class UniversityController {
     //Service declaration.
     //-------------------------------------------------------------------------------
     private final UniversityService universityService;
+    //-------------------------------------------------------------------------------
 
     //Constructor.
     //-------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ public class UniversityController {
     }
     //-------------------------------------------------------------------------------
 
-    //End-Points. ( <C-R-U-D> End-points )
+    //End-Points.
     //-------------------------------------------------------------------------------
     @GetMapping("/details/{name}")
     public ResponseEntity<String> getUniversity(@PathVariable String name) {
@@ -56,6 +56,14 @@ public class UniversityController {
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.badRequest().body("University names already exist !");
+    }
+
+    @GetMapping("/is-present/{universityName}")
+    public ResponseEntity<String> isPresentUniversity(@PathVariable String universityName) {
+        if (universityService.isPresent(universityName)) {
+            return ResponseEntity.ok(universityService.get(universityName).toString());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/delete/university/{universityName}")
