@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import soheil.demo.start.DTO.DtoMapper;
 import soheil.demo.start.DTO.UserDTO;
 import soheil.demo.start.model.*;
+import soheil.demo.start.repository.MarkCourseStudentRepository;
 
 
 import java.util.*;
@@ -20,6 +21,7 @@ public class AdminService {
     private final UniversityService universityService;
     private final FacultyService facultyService;
     private final CourseService courseService;
+    private final MarkCourseStudentRepository markCourseStudentRepository;
     private final DtoMapper dtoMapper;
     //-------------------------------------------------------------------------------
 
@@ -30,6 +32,7 @@ public class AdminService {
                         UniversityService universityService,
                         FacultyService facultyService,
                         CourseService courseService,
+                        MarkCourseStudentRepository markCourseStudentRepository,
                         DtoMapper dtoMapper)
     {
         this.studentService = studentService;
@@ -37,6 +40,7 @@ public class AdminService {
         this.universityService = universityService;
         this.facultyService = facultyService;
         this.courseService = courseService;
+        this.markCourseStudentRepository = markCourseStudentRepository;
         this.dtoMapper = dtoMapper;
     }
     //-------------------------------------------------------------------------------
@@ -158,7 +162,7 @@ public class AdminService {
 
     //Required methods.
     //-------------------------------------------------------------------------------
-    public ResponseEntity<String> AverageMarkOfFaculty(String facultyName) {
+    public String AverageMarkOfFaculty(String facultyName) {
         if (facultyService.isPresent(facultyName)) {
             Faculty faculty = facultyService.get(facultyName);
             List<Short> marks = new ArrayList<>();
@@ -175,16 +179,16 @@ public class AdminService {
                 }
             }
             if (marks.isEmpty()) {
-                return ResponseEntity.badRequest().body("No marks available !");
+                return "No marks available !";
             }
             OptionalDouble average = marks.stream().mapToInt(Short::intValue).average();
-            return ResponseEntity.ok().body("Average of marks of the course: " + average.toString());
+            return "Average of marks of the course: " + average.toString();
         }else {
-            return ResponseEntity.badRequest().body("Faculty does not exist !");
+            return "Faculty does not exist !";
         }
     }
 
-    public ResponseEntity<String> averageMarkOfCourse(String courseName, short credit) {
+    public String averageMarkOfCourse(String courseName, short credit) {
         if (courseService.isPresent(courseName)) {
             Course course = courseService.get(courseName);
             List<MarkCourseStudent> markCourseStudents = course.getMarkCourseStudents();
@@ -194,17 +198,17 @@ public class AdminService {
                         .mapToInt(Short::intValue)
                         .average();
                 if (average.isEmpty()) {
-                    return ResponseEntity.badRequest().body("No marks available !");
+                    return "No marks available !";
                 }
-                return ResponseEntity.ok().body("Average of marks of the course: " + average.toString());
+                return "Average of marks of the course: " + average;
             }else {
-                return ResponseEntity.badRequest().body("Course does not exist !");
+                return "Enrollment does not exist !";
             }
         }else
-            return ResponseEntity.badRequest().body("Course does not exist !");
+            return "Course does not exist !";
     }
 
-    public ResponseEntity<String> averageMarkOfStudent(String studentUserName) {
+    public String averageMarkOfStudent(String studentUserName) {
         if (studentService.findById(studentUserName).isPresent()) {
             Student student = studentService.findById(studentUserName).get();
 
@@ -214,14 +218,90 @@ public class AdminService {
                         .filter(Objects::nonNull)
                         .mapToInt(Short::intValue).average();
                 if (average.isEmpty()) {
-                    return ResponseEntity.badRequest().body("No marks available !");
+                    return "No marks available !";
                 }
-                return ResponseEntity.ok().body("Average of marks of the student: " + average.toString());
+                return "Average of marks of the student: " + average;
             }else {
-                return ResponseEntity.badRequest().body("No marks available !");
+                return "No Enrollment available !";
             }
         }else
-            return ResponseEntity.badRequest().body("Student does not exist !");
+            return "Student does not exist !";
+    }
+
+    public String setCourseForStudent(String studentUserName, String courseName) {
+        Student student;
+        Course course;
+        if (studentService.findById(studentUserName).isPresent()) {
+            student = studentService.findById(studentUserName).get();
+        }else {
+            return "Student does not exist !";
+        }
+
+        if (courseService.isPresent(courseName)) {
+            course = courseService.get(courseName);
+        }else {
+            return "Course does not exist !";
+        }
+
+        if (student.getMarkCourseStudents()
+                .stream()
+                .anyMatch(match
+                -> match
+                .getCourse()
+                .getName()
+                .equals(courseName)))
+        {
+            return "Student already is a part of this course";
+        }else {
+            MarkCourseStudent markCourseStudent = new MarkCourseStudent(course, student);
+            markCourseStudentRepository.save(markCourseStudent);
+            return "student : " + student.getName() +
+                    " " + student.getLast_name() +
+                    "\nis taking part in course : " + course.getName();
+        }
+    }
+
+    public String setMarkForStudent(String studentUserName, String courseName, short mark) {
+        // Setting a Mark for a Student in a specific Course.
+        Student student;
+        Course course;
+        if (studentService.findById(studentUserName).isPresent()) {
+            student = studentService.findById(studentUserName).get();
+        }else  {
+            return "Student does not exist !";
+        }
+        if (courseService.isPresent(courseName)) {
+            course = courseService.get(courseName);
+        }else {
+            return "Course does not exist !";
+        }
+
+        MarkCourseStudent markCourseStudent = student.getMarkCourseStudents()
+                .stream().filter(
+                        match ->
+                                match
+                                        .getCourse()
+                                        .getName()
+                                        .equals(courseName)
+                )
+                .findFirst()
+                .orElse(null);
+
+        if (markCourseStudent == null) {
+            markCourseStudent = new MarkCourseStudent(course, student, mark);
+        }else {
+            markCourseStudent.setMark(mark);
+        }
+
+        markCourseStudentRepository.save(markCourseStudent);
+        return "mark : " + mark +
+                " of course: " +
+                course.getName() +
+                "is know set for student : " + student.getName();
+    }
+
+    public String setCourseForProfessor(String professorName, String courseName) {
+        // Setting Course for a Professor.
     }
     //-------------------------------------------------------------------------------
 
