@@ -32,7 +32,7 @@ public class StudentController {
     //-------------------------------------------------------------------------------
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllStudents() {
-        if (studentService.findAll() == null) {
+        if (studentService.findAll().isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok

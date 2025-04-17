@@ -70,11 +70,11 @@ public class AdminController {
         };
     }
 
-    @PutMapping("/set-course-for-student/{studentName}/{courseName}")
-    public ResponseEntity<String> setCourseForStudent(@PathVariable String studentName,
+    @PutMapping("/set-course-for-student/{studentUsername}/{courseName}")
+    public ResponseEntity<String> setCourseForStudent(@PathVariable String studentUsername,
                                                       @PathVariable String courseName)
     {
-        String response = adminService.setCourseForStudent(studentName, courseName);
+        String response = adminService.setCourseForStudent(studentUsername, courseName);
         return switch (response) {
             case "Student does not exist !",
                  "Course does not exist !",
@@ -102,7 +102,13 @@ public class AdminController {
     public ResponseEntity<String> setCourseForProfessor(@PathVariable String professorUsername,
                                                         @PathVariable String courseName)
     {
-        // Setting a Course for Professor.
+        String response = adminService.setCourseForProfessor(professorUsername, courseName);
+        return switch (response) {
+            case "Professor does not exist !",
+                 "Course does not exist !"
+                    -> ResponseEntity.badRequest().body(response);
+            default -> ResponseEntity.ok(response);
+        };
     }
     //-------------------------------------------------------------------------------
 }

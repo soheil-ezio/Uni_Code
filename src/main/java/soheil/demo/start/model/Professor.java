@@ -32,12 +32,8 @@ public class Professor extends User {
     @JoinColumn(name = "faculty_name")
     private Faculty faculty;
 
-    @ManyToMany(mappedBy = "professors")
-    private List<Course> courseList;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
-    private UniClass uniClass;
+    @ManyToMany(mappedBy = "professors", fetch = FetchType.LAZY)
+    private List<Course> courses;
 
     @OneToOne(mappedBy = "facultyHeadProfessor")
     private Faculty facultyHeadId;
@@ -114,22 +110,22 @@ public class Professor extends User {
         this.faculty = faculty;
     }
 
-    public List<Course> getCourseList() {
-        return courseList;
+    public List<Course> getCourses() {
+        return courses;
     }
 
-    public void setCourseList(List<Course> courseList) {
-        this.courseList = courseList;
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
-    public UniClass getUniClass() {
-        return uniClass;
+    public Faculty getFacultyHeadId() {
+        return facultyHeadId;
     }
 
-    public void setUniClass(UniClass uniClass) {
-        this.uniClass = uniClass;
+    public void setFacultyHeadId(Faculty facultyHeadId) {
+        this.facultyHeadId = facultyHeadId;
     }
-    //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
 
     //-------------------------------------------------------------------------------
     @Override
@@ -138,10 +134,9 @@ public class Professor extends User {
                 "name='" + name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", professor_id_number=" + professor_id_number +
-                ", university=" + university +
-                ", faculty=" + faculty +
-                ", courseList=" + courseList +
-                ", uniClass=" + uniClass +
+                ", university=" + (university != null ? university.getName() : null) +
+                ", faculty=" + (faculty != null ? faculty.getName() : null) +
+                ", courseList=" + (courses != null ? courses.toString() : null) +
                 '}';
     }
     //-------------------------------------------------------------------------------

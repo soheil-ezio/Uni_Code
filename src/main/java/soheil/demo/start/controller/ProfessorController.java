@@ -66,10 +66,5 @@ public class ProfessorController {
         return ResponseEntity.ok(
                 dtoMapper.professorToUserDTO(professorService.update(dtoMapper.userDTOToProfessor(userDTO), username)));
     }
-
-    @GetMapping("/Hello")
-    public String hello() {
-        return "Hello";
-    }
     //-------------------------------------------------------------------------------
 }

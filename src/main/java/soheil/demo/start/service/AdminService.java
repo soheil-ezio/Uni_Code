@@ -1,16 +1,19 @@
 package soheil.demo.start.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soheil.demo.start.DTO.DtoMapper;
 import soheil.demo.start.DTO.UserDTO;
 import soheil.demo.start.model.*;
+import soheil.demo.start.repository.CourseRepository;
 import soheil.demo.start.repository.MarkCourseStudentRepository;
 
 
 import java.util.*;
 
 @Service
+@Transactional
 public class AdminService {
 
 
@@ -23,6 +26,7 @@ public class AdminService {
     private final CourseService courseService;
     private final MarkCourseStudentRepository markCourseStudentRepository;
     private final DtoMapper dtoMapper;
+    private final CourseRepository courseRepository;
     //-------------------------------------------------------------------------------
 
     //Constructor
@@ -33,7 +37,7 @@ public class AdminService {
                         FacultyService facultyService,
                         CourseService courseService,
                         MarkCourseStudentRepository markCourseStudentRepository,
-                        DtoMapper dtoMapper)
+                        DtoMapper dtoMapper, CourseRepository courseRepository)
     {
         this.studentService = studentService;
         this.professorService = professorService;
@@ -42,6 +46,7 @@ public class AdminService {
         this.courseService = courseService;
         this.markCourseStudentRepository = markCourseStudentRepository;
         this.dtoMapper = dtoMapper;
+        this.courseRepository = courseRepository;
     }
     //-------------------------------------------------------------------------------
 
@@ -182,7 +187,7 @@ public class AdminService {
                 return "No marks available !";
             }
             OptionalDouble average = marks.stream().mapToInt(Short::intValue).average();
-            return "Average of marks of the course: " + average.toString();
+            return "Average of marks of the faculty: " + average.toString();
         }else {
             return "Faculty does not exist !";
         }
@@ -254,6 +259,8 @@ public class AdminService {
             return "Student already is a part of this course";
         }else {
             MarkCourseStudent markCourseStudent = new MarkCourseStudent(course, student);
+            course.getStudents().add(student);
+            courseRepository.save(course);
             markCourseStudentRepository.save(markCourseStudent);
             return "student : " + student.getName() +
                     " " + student.getLast_name() +
@@ -301,7 +308,28 @@ public class AdminService {
     }
 
     public String setCourseForProfessor(String professorName, String courseName) {
-        // Setting Course for a Professor.
+        Professor professor;
+        Course course;
+
+        if (professorService.findById(professorName).isPresent()) {
+            professor = professorService.findById(professorName).get();
+        }else {
+            return "Professor does not exist !";
+        }
+        if (courseService.isPresent(courseName)) {
+            course = courseService.get(courseName);
+        }else {
+            return "Course does not exist !";
+        }
+
+        if (professor.getCourses().contains(course)) {
+            return "The professor : " + professor.getName() +
+                    "\n Is already teaching course: " + course.getName();
+        }else {
+            course.getProfessors().add(professor);
+            courseRepository.save(course);
+            return "Professor : " + professor.getName() + "is now teaching course: " + course.getName();
+        }
     }
     //-------------------------------------------------------------------------------
 

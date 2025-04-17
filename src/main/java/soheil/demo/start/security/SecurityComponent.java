@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityComponent {
 
     @Bean
@@ -24,10 +23,14 @@ public class SecurityComponent {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/admins/**").hasRole("ADMIN")
-                        .requestMatchers("/api/professors/**").hasAnyRole("PROFESSOR", "ADMIN")
-                        .requestMatchers("/api/students/**").hasAnyRole("STUDENT", "ADMIN")
-                        .requestMatchers("/api/universities/**").hasAnyRole("UNIVERSITY", "ADMIN")
+                        .requestMatchers("/api/professors/**")
+                            .hasAnyAuthority("ROLE_PROFESSOR", "ROLE_ADMIN")
+                        .requestMatchers("/api/students/**")
+                            .hasAnyAuthority("ROLE_STUDENT", "ROLE_ADMIN")
+                        .requestMatchers("/api/universities/**")
+                            .hasAnyAuthority("ROLE_UNIVERSITY", "ROLE_ADMIN")
+                        .requestMatchers("/api/**")
+                            .hasAuthority("ROLE_ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin(Customizer.withDefaults())

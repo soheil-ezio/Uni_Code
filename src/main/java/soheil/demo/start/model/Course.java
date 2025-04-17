@@ -20,7 +20,7 @@ public class Course {
 
     //Relational attributes.
     //-------------------------------------------------------------------------------
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<MarkCourseStudent> markCourseStudents;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,9 +44,6 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "professor_username")
     )
     private List<Professor> professors;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private UniClass uniClass;
     //-------------------------------------------------------------------------------
 
     //Constructors.
@@ -120,30 +117,19 @@ public class Course {
     public void setProfessors(List<Professor> professors) {
         this.professors = professors;
     }
-
-    public UniClass getUniClass() {
-        return uniClass;
-    }
-
-    public void setUniClass(UniClass uniClass) {
-        this.uniClass = uniClass;
-    }
     //-------------------------------------------------------------------------------
 
-    //toString method.
-    //-------------------------------------------------------------------------------
     @Override
     public String toString() {
         return "Course{" +
                 "name='" + name + '\'' +
                 ", credit=" + credit +
                 ", markCourseStudents=" + markCourseStudents +
-                ", university=" + university +
-                ", faculty=" + faculty +
-                ", students=" + students +
-                ", professors=" + professors +
-                ", uniClass=" + uniClass +
+                ", university=" + (university != null ? university.getName() : null) +
+                ", faculty=" + (faculty != null ? faculty.getName() : null) +
+                ", students=" + (students != null ? students.toString() : null) +
+                ", professors=" + (professors != null ? professors.toString() : null) +
                 '}';
     }
-    //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
 }

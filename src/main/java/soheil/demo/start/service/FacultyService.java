@@ -10,7 +10,9 @@ import soheil.demo.start.repository.FacultyRepository;
 import soheil.demo.start.service.general_interface.GeneralInterface;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service("facultyService")
 @Transactional
@@ -62,7 +64,7 @@ public class FacultyService implements GeneralInterface<Faculty> {
     }
 
     public String addMultiple(List<String> facultyNames, String universityName) {
-        List<String> faculties = new ArrayList<>();
+        Set<String> faculties = new HashSet<>(facultyNames);
         if (universityService.isPresent(universityName)) {
             for (Faculty faculty : universityService.get(universityName).getFaculty()) {
                 faculties.add(faculty.getName());

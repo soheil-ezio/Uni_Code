@@ -8,7 +8,8 @@ import soheil.demo.start.service.CourseService;
 
 import java.util.HashMap;
 
-@Controller("/api/courses")
+@RestController
+@RequestMapping("/api/courses")
 public class CourseController {
 
     //Service declaration.
@@ -26,7 +27,7 @@ public class CourseController {
     //End-Points.
     //-------------------------------------------------------------------------------
     @GetMapping("/details/{name}")
-    public ResponseEntity<String> getFaculty(@PathVariable String name) {
+    public ResponseEntity<String> getCourse(@PathVariable String name) {
         if (courseService.isPresent(name)) {
             return ResponseEntity.ok(courseService.get(name).toString());
         }
@@ -34,7 +35,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getFaculties() {
+    public ResponseEntity<String> getCourses() {
         String response = courseService.getAll();
         if (response.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -43,8 +44,9 @@ public class CourseController {
     }
 
     @PostMapping("/create/course/{courseName}/{credit}")
-    public ResponseEntity<String> createFaculty(@PathVariable String courseName,
-                                                @PathVariable String credit) {
+    public ResponseEntity<String> createCourse(@PathVariable String courseName,
+                                               @PathVariable String credit)
+    {
         String response = courseService.add(courseName, credit);
         if (!response.isEmpty()) {
             return ResponseEntity.ok(response);
@@ -52,9 +54,10 @@ public class CourseController {
         return ResponseEntity.badRequest().body("faculty already exists !");
     }
 
-    @PostMapping("/create/course/{facultyName}")
-    public ResponseEntity<String> createCourses(@RequestParam HashMap<String, Short> courseNames,
-                                                @PathVariable String facultyName) {
+    @PostMapping("/create/multi-course/{facultyName}")
+    public ResponseEntity<String> createCourses(@RequestBody HashMap<String, Short> courseNames,
+                                                @PathVariable String facultyName)
+    {
         String response = courseService.addCourses(courseNames, facultyName);
         if (response != null) {
             return ResponseEntity.ok(response);
@@ -81,7 +84,8 @@ public class CourseController {
 
     @PostMapping("/default-creation/course/{courseName}/{credit}")
     public ResponseEntity<String> createDefaultCourse(@PathVariable String courseName,
-                                                      @PathVariable String credit) {
+                                                      @PathVariable String credit)
+    {
         Course course = new Course(courseName, Short.parseShort(credit));
         if (courseService.creatCourse(course)) {
             return ResponseEntity.ok(course.toString());

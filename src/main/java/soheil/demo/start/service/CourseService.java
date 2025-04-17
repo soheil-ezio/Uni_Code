@@ -77,8 +77,9 @@ public class CourseService {
                 if (faculty.getUniversity() == null) {
                     return "Faculty does not belong to any University!";
                 }
-                course.setFaculty(facultyService.get(facultyName));
-                courseRepository.save(new Course(courseName, (short) courses.get(courseName)));
+                course.setFaculty(faculty);
+                course.setUniversity(faculty.getUniversity());
+                courseRepository.save(course);
             }
             return "Courses created successfully :\n" + courses;
         }

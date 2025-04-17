@@ -19,16 +19,16 @@ public class Faculty {
     @JoinColumn(name = "university")
     private University university;
 
-    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     private List<Professor> professors;
 
-    @OneToMany(mappedBy = "university", fetch = FetchType.LAZY)
-    private List<Student> Students;
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
+    private List<Student> students;
 
-    @OneToMany(mappedBy = "faculty")
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     private List<Course> courses;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Professor facultyHeadProfessor;
     //-------------------------------------------------------------------------------
 
@@ -68,11 +68,11 @@ public class Faculty {
     }
 
     public List<Student> getStudents() {
-        return Students;
+        return students;
     }
 
     public void setStudents(List<Student> students) {
-        Students = students;
+        this.students = students;
     }
 
     public List<Course> getCourses() {
@@ -98,10 +98,11 @@ public class Faculty {
     public String toString() {
         return "Faculty{" +
                 "name='" + name + '\'' +
-                ", university=" + university +
-                ", professors=" + professors +
-                ", Students=" + Students +
-                ", courses=" + courses +
+                ", university=" + (university != null ? university.getName() : null) +
+                ", professors=" + (professors != null ? professors.toString() : null) +
+                ", Students=" + (students != null ? students.toString() : null) +
+                ", courses=" + (courses != null ? courses.toString() : null) +
+                ", facultyHeadProfessor=" + (facultyHeadProfessor != null ? facultyHeadProfessor.getName() : null) +
                 '}';
     }
     //-------------------------------------------------------------------------------

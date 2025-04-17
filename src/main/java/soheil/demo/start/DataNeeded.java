@@ -43,8 +43,8 @@ public class DataNeeded implements CommandLineRunner {
             );
             userRepository.save(user);
         }
-        if (universityRepository.count() == 0) {
-            universityService.add("Shahrood University of Technology");
+        if (!universityRepository.existsById("Shahrood University of Technology")) {
+            universityRepository.save(new University("Shahrood University of Technology"));
         }
     }
 }

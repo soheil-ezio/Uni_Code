@@ -87,10 +87,10 @@ public class University {
     public String toString() {
         return "University{" +
                 "name='" + name + '\'' +
-                ", faculty=" + faculty +
-                ", professors=" + professors +
-                ", students=" + students +
-                ", courses=" + courses +
+                ", faculty=" + (faculty != null ? faculty.toString() : null) +
+                ", professors=" + (professors != null ? professors.toString() : null) +
+                ", students=" + (students != null ? students.toString() : null) +
+                ", courses=" + (courses != null ? courses.toString() : null) +
                 '}';
     }
     //-------------------------------------------------------------------------------

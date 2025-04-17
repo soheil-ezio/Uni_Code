@@ -8,7 +8,8 @@ import soheil.demo.start.service.general_interface.GeneralInterface;
 
 import java.util.List;
 
-@RestController("/api/faculties")
+@RestController
+@RequestMapping("/api/faculties")
 public class FacultyController {
 
     //Service declaration.
@@ -43,7 +44,7 @@ public class FacultyController {
         if (response.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(facultyService.getAll());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/create/faculty/{facultyName}/{universityName}")
@@ -56,7 +57,7 @@ public class FacultyController {
         return ResponseEntity.badRequest().body("faculty already exists !");
     }
 
-    @PostMapping("/create/faculty/{facultyNames}/{universityName}")
+    @PostMapping("/create/multi-faculty/{facultyNames}/{universityName}")
     public ResponseEntity<String> createFaculties(@PathVariable List<String> facultyNames,
                                                   @PathVariable String universityName) {
         String response = facultyService.addMultiple(facultyNames, universityName);

@@ -31,12 +31,8 @@ public class Student extends User {
     @JoinColumn(name = "faculty_name")
     private Faculty faculty;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<MarkCourseStudent> markCourseStudents;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_id")
-    private UniClass uniClass;
     //-------------------------------------------------------------------------------
 
     //Constructors.
@@ -117,14 +113,6 @@ public class Student extends User {
     public void setMarkCourseStudents(List<MarkCourseStudent> markCourseStudents) {
         this.markCourseStudents = markCourseStudents;
     }
-
-    public UniClass getUniClass() {
-        return uniClass;
-    }
-
-    public void setUniClass(UniClass uniClass) {
-        this.uniClass = uniClass;
-    }
     //-------------------------------------------------------------------------------
 
     //toString Method.
@@ -135,10 +123,9 @@ public class Student extends User {
                 "name='" + name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", student_id_number=" + student_id_number +
-                ", university=" + university +
-                ", faculty=" + faculty +
-                ", markCourseStudents=" + markCourseStudents +
-                ", uniClass=" + uniClass +
+                ", university=" + (university != null ? university.getName() : null) +
+                ", faculty=" + (faculty != null ? faculty.getName() : null) +
+                ", markCourseStudents=" + (markCourseStudents != null ? markCourseStudents.toString() : null) +
                 '}';
     }
     //-------------------------------------------------------------------------------
